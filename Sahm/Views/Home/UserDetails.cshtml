@@ -163,7 +163,6 @@
         </div>
     </div>
 
-    <!-- Payment Section -->
     <div id="payDiv" class="content-div">
         <h2>Make a Payment</h2>
 
@@ -175,17 +174,12 @@
         
     </div>
 
-    <!-- Request Car Section -->
     <div id="requestCarDiv" class="content-div">
         <h2>Request a Car</h2>
-        @using (Html.BeginForm("RequestCar", "Home", FormMethod.Post))
-        {
             <input type="hidden" name="UserId" value="@Model.UserId" />
-            <button type="submit">Request Car</button>
-        }
+            <button type="submit" onclick="RequestCar()">Request Car</button>
     </div>
 
-    <!-- Evaluation Section -->
     <div id="evaluationDiv" class="content-div">
         <h2>Evaluation</h2>
         <div class="emoji-selection">
@@ -193,17 +187,14 @@
             <span class="emoji" data-value="neutral" onclick="selectEmoji(this)">&#128528;</span>
             <span class="emoji" data-value="sad" onclick="selectEmoji(this)">&#128577;</span>
         </div>
-        @using (Html.BeginForm("Evaluate", "Home", FormMethod.Post))
-        {
+
             <input type="hidden" name="UserId" value="@Model.UserId" />
             <input type="hidden" id="SelectedEmoji" name="Emoji" />
             <label for="comment">Comment:</label>
             <textarea id="comment" name="Comment" placeholder="Enter your comment" rows="3" required></textarea>
-
-
             <br><br>
-            <button type="submit">Submit Evaluation</button>
-        }
+            <button type="submit" onclick="Evaluate()" >Submit Evaluation</button>
+        
     </div>
 </div>
 
@@ -246,4 +237,50 @@
             }
         })
     }
+
+    function RequestCar() {
+        var userData = {
+            userId : @Model.UserId,
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Home/RequestCar',
+            data: userData,
+            success: function () {
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Car Requested!",
+                    icon: "success"
+                });
+            },
+            error: function () {
+                console.log("There is an Error ")
+            }
+        })
+    }
+
+
+    function Evaluate() {
+        var userData = {
+            userId: @Model.UserId,
+            comment: $('#comment').val(),
+            Emoji: $('#SelectedEmoji').val(),
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Home/Evaluate',
+            data: userData,
+            success: function () {
+                Swal.fire({
+                    title: "Good job!",
+                    text: "successfully completed",
+                    icon: "success"
+                });
+            },
+            error: function () {
+                console.log("There is an Error ")
+            }
+        })
+    }
+
 </script>
