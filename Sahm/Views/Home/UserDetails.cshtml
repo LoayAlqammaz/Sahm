@@ -1,0 +1,249 @@
+﻿@model Sahm.Models.User
+
+@{
+    ViewBag.Title = "Sahm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .container {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .header {
+        background-color: #E0F3FF;
+        padding: 20px;
+    }
+
+   .header img {
+        max-width: 250px;
+        height: auto;
+
+    }
+        
+    .header h1 {
+        margin-bottom: 25px;
+        font-size: 24px;
+        color: #0078D7;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        background-color: #E0F3FF;
+    }
+
+    .action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.3s, color 0.3s;
+    }
+
+    .action i {
+        font-size: 30px;
+        color: #0078D7;
+        margin-bottom: 5px;
+
+    }
+
+    .action span {
+        font-size: 14px;
+        color: #333;
+    }
+
+        .action:hover {
+            transform: scale(1.1);
+            color: #0056a3;
+        }
+
+    .content-div {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .content-div h2 {
+    color: #0078D7;
+    margin-bottom: 15px;
+    }
+
+    .emoji-selection {
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .emoji-selection span {
+        cursor: pointer;
+        margin-right: 15px;
+        transition: transform 0.2s, filter 0.2s;
+    }
+
+           
+    .emoji-selection span:hover,
+    .emoji-selection span.selected {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 20px yellow);
+    }
+    .emoji-selection span:hover,
+    .emoji-selection span.selected {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 20px yellow);
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #0078D7;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+         background-color: #0056a3;
+        }
+</style>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahm</title>
+    <link rel="stylesheet" href="~/Content/Site.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<div class="container ">
+    <div class="header">
+        <img src="~/assets/img/logo/Sahm-Logo.png" alt="Sahm Logo" />
+        <h1>Hello, @Model.Name</h1>
+    </div>
+    <div class="actions">
+        <div class="action" onclick="showDiv('payDiv')">
+            <i class="fa fa-credit-card"></i>
+            <span>Pay</span>
+        </div>
+        <div class="action" onclick="showDiv('requestCarDiv')">
+            <i class="fa fa-car"></i>
+            <span>Request Car</span>
+        </div>
+        <div class="action" onclick="showDiv('evaluationDiv')">
+            <i class="fa fa-smile"></i>
+            <span>Evaluation</span>
+        </div>
+    </div>
+
+    <!-- Payment Section -->
+    <div id="payDiv" class="content-div">
+        <h2>Make a Payment</h2>
+
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="Amount" placeholder="Enter amount" required />
+            <br><br>
+            <button type="submit" onclick="MakePayment()">Confirm Payment</button>
+        
+    </div>
+
+    <!-- Request Car Section -->
+    <div id="requestCarDiv" class="content-div">
+        <h2>Request a Car</h2>
+        @using (Html.BeginForm("RequestCar", "Home", FormMethod.Post))
+        {
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <button type="submit">Request Car</button>
+        }
+    </div>
+
+    <!-- Evaluation Section -->
+    <div id="evaluationDiv" class="content-div">
+        <h2>Evaluation</h2>
+        <div class="emoji-selection">
+            <span class="emoji" data-value="happy" onclick="selectEmoji(this)">&#128512;</span>
+            <span class="emoji" data-value="neutral" onclick="selectEmoji(this)">&#128528;</span>
+            <span class="emoji" data-value="sad" onclick="selectEmoji(this)">&#128577;</span>
+        </div>
+        @using (Html.BeginForm("Evaluate", "Home", FormMethod.Post))
+        {
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <input type="hidden" id="SelectedEmoji" name="Emoji" />
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="Comment" placeholder="Enter your comment" rows="3" required></textarea>
+
+
+            <br><br>
+            <button type="submit">Submit Evaluation</button>
+        }
+    </div>
+</div>
+
+<script>
+    function showDiv(divId) {
+        document.getElementById('payDiv').style.display = 'none';
+        document.getElementById('requestCarDiv').style.display = 'none';
+        document.getElementById('evaluationDiv').style.display = 'none';
+        document.getElementById(divId).style.display = 'block';
+    }
+
+    function selectEmoji(element) {
+        document.querySelectorAll('.emoji').forEach(emoji => {
+            emoji.classList.remove('selected');
+        });
+        element.classList.add('selected');
+        document.getElementById('SelectedEmoji').value = element.getAttribute('data-value');
+    }
+</script>
+
+<script>
+    function MakePayment() {
+        var userData = {
+            userId : @Model.UserId,
+            amount: $('#amount').val()
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Home/MakePayment',
+            data: userData,
+            success: function () {
+                Swal.fire({
+                    title: "Good job!",
+                    text: "payment successfully completed",
+                    icon: "success"
+                });
+            },
+            error: function () {
+                console.log("There is an Error ")
+            }
+        })
+    }
+</script>

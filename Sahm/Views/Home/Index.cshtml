@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Sahm.Models.User>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>QR Codes</h1>
+    @foreach (var user in Model)
+    {
+        <div>
+            <h2>@user.Name</h2>
+            <img src="@Url.Content("~/Content/QR/User" + user.UserId + ".png")" alt="QR Code for @user.Name" />
+        </div>
+    }
+</body>
+</html>
