@@ -138,12 +138,23 @@ namespace Sahm.Controllers
             {
                 return Json(new { success = false, message = "User not found." });
             }
-
+            var filePath = Server.MapPath($"~/Content/QR/User{userId}.png");
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = $"User deleted, but an error occurred while deleting QR code: {ex.Message}" });
+                }
+            }
             db.Users.Remove(user);
             db.SaveChanges();
-
-            return Json(new { success = true, message = "User deleted successfully." });
+            return Json(new { success = true, message = "User and QR code deleted successfully." });
         }
+
 
 
         private void GenerateQRCodeForUser(int userId)

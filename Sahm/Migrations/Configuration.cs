@@ -15,21 +15,8 @@
 
         protected override void Seed(Sahm.Models.ApplicationDbContext context)
         {
-            context.Users.AddOrUpdate(
-                u => u.UserId, 
-                new User
-                {
-                    UserId = 1,
-                    Name = "Mohammad"
-                },
-                new User
-                {
-                    UserId = 2,
-                    Name = "Loay"
-                }
-            );
 
-            context.SaveChanges();
+
         }
     }
 }
