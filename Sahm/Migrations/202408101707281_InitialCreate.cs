@@ -25,7 +25,6 @@
                     {
                         UserId = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        QRCode = c.String(),
                     })
                 .PrimaryKey(t => t.UserId);
             
@@ -49,7 +48,7 @@
                     {
                         PaymentId = c.Int(nullable: false, identity: true),
                         UserId = c.Int(nullable: false),
-                        Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Amount = c.Double(nullable: false),
                         PaymentDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.PaymentId)

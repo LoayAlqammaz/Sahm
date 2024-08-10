@@ -138,13 +138,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202408071712176_InitialCreate.cs" />
-    <Compile Include="Migrations\202408071712176_InitialCreate.designer.cs">
-      <DependentUpon>202408071712176_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202408072110409_InitialCreateupdate.cs" />
-    <Compile Include="Migrations\202408072110409_InitialCreateupdate.designer.cs">
-      <DependentUpon>202408072110409_InitialCreateupdate.cs</DependentUpon>
+    <Compile Include="Migrations\202408101707281_InitialCreate.cs" />
+    <Compile Include="Migrations\202408101707281_InitialCreate.designer.cs">
+      <DependentUpon>202408101707281_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -155,11 +151,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\fonts\LineIcons.svg" />
+    <Content Include="assets\css\userDetailsCSS.css" />
     <Content Include="assets\img\logo\Sahm-Logo.png" />
-    <Content Include="assets\js\bootstrap.bundle.min.js" />
-    <Content Include="assets\js\main.js" />
-    <Content Include="assets\js\wow.min.js" />
+    <Content Include="assets\js\userActions.js" />
+    <Content Include="assets\js\user_service.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -207,12 +202,6 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="assets\.DS_Store" />
-    <Content Include="assets\fonts\LineIcons.eot" />
-    <Content Include="assets\fonts\LineIcons.ttf" />
-    <Content Include="assets\fonts\LineIcons.woff" />
-    <Content Include="assets\fonts\LineIcons.woff2" />
-    <Content Include="assets\js\.DS_Store" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -242,17 +231,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="assets\css\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202408071712176_InitialCreate.resx">
-      <DependentUpon>202408071712176_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202408072110409_InitialCreateupdate.resx">
-      <DependentUpon>202408072110409_InitialCreateupdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202408101707281_InitialCreate.resx">
+      <DependentUpon>202408101707281_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

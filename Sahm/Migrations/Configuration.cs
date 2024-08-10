@@ -1,5 +1,6 @@
 ﻿namespace Sahm.Migrations
 {
+    using Sahm.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,10 +15,21 @@
 
         protected override void Seed(Sahm.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            context.Users.AddOrUpdate(
+                u => u.UserId, 
+                new User
+                {
+                    UserId = 1,
+                    Name = "Mohammad"
+                },
+                new User
+                {
+                    UserId = 2,
+                    Name = "Loay"
+                }
+            );
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data.
+            context.SaveChanges();
         }
     }
 }

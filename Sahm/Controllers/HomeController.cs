@@ -16,11 +16,18 @@ namespace Sahm.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            var users = db.Users.ToList();
-            return View(users);
+            int pageSize = 6; 
+            var users = db.Users.OrderBy(u => u.UserId).ToList(); 
+            var pagedUsers = users.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)users.Count / pageSize);
+
+            return View(pagedUsers);
         }
+
 
         public ActionResult UserDetails(int userId)
         {
@@ -33,7 +40,7 @@ namespace Sahm.Controllers
         }
 
         [HttpPost]
-        public ActionResult MakePayment(int userId, decimal amount)
+        public ActionResult MakePayment(int userId, double amount)
         {
             var payment = new Payment
             {
@@ -79,10 +86,68 @@ namespace Sahm.Controllers
 
             return RedirectToAction("UserDetails", new { userId });
         }
-        public ActionResult GenerateQRCodes()
-        {
-            var users = db.Users.Take(2).ToList();
 
+
+        [HttpPost]
+        public ActionResult AddUser(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var newUser = new User { Name = name };
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                GenerateQRCodeForUser(newUser.UserId);
+
+                return Json(new { success = true, message = "User added successfully!" });
+            }
+
+            return Json(new { success = false, message = "Please provide a name." });
+        }
+
+        [HttpGet]
+        public ActionResult GetUser(int userId)
+        {
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "User not found." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(user, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult EditUser(int userId, string name)
+        {
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "User not found." });
+            }
+            user.Name = name;
+            db.SaveChanges();
+
+            return Json(new { success = true, message = "User updated successfully." });
+        }
+
+        [HttpPost]
+        public JsonResult DeleteUser(int userId)
+        {
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "User not found." });
+            }
+
+            db.Users.Remove(user);
+            db.SaveChanges();
+
+            return Json(new { success = true, message = "User deleted successfully." });
+        }
+
+
+        private void GenerateQRCodeForUser(int userId)
+        {
             var directoryPath = Server.MapPath("~/Content/QR");
 
             if (!Directory.Exists(directoryPath))
@@ -90,15 +155,10 @@ namespace Sahm.Controllers
                 Directory.CreateDirectory(directoryPath);
             }
 
-            foreach (var user in users)
-            {
-                var qrCodeContent = Url.Action("UserDetails", "Home", new { userId = user.UserId }, Request.Url.Scheme);
-                var qrCode = GenerateQRCode(qrCodeContent);
-                var filePath = Path.Combine(directoryPath, $"User{user.UserId}.png");
-                System.IO.File.WriteAllBytes(filePath, qrCode);
-            }
-
-            return RedirectToAction("Index");
+            var qrCodeContent = Url.Action("UserDetails", "Home", new { userId }, Request.Url.Scheme);
+            var qrCode = GenerateQRCode(qrCodeContent);
+            var filePath = Path.Combine(directoryPath, $"User{userId}.png");
+            System.IO.File.WriteAllBytes(filePath, qrCode);
         }
 
         private byte[] GenerateQRCode(string content)
