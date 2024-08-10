@@ -12,9 +12,10 @@ function selectEmoji(element) {
     element.classList.add('selected');
     document.getElementById('SelectedEmoji').value = element.getAttribute('data-value');
 }
+
 function MakePayment() {
     var userData = {
-        userId: @Model.UserId,
+        userId: $('#userId').val(),
         amount: $('#amount').val()
     }
     $.ajax({
@@ -36,7 +37,7 @@ function MakePayment() {
 
 function RequestCar() {
     var userData = {
-        userId: @Model.UserId,
+        userId: $('#userId').val(),
     }
     $.ajax({
         type: 'post',
@@ -58,7 +59,7 @@ function RequestCar() {
 
 function Evaluate() {
     var userData = {
-        userId: @Model.UserId,
+        userId: $('#userId').val(),
         comment: $('#comment').val(),
         Emoji: $('#SelectedEmoji').val(),
     }

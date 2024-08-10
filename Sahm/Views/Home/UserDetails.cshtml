@@ -20,6 +20,7 @@
     <div class="header">
         <img src="~/assets/img/logo/Sahm-Logo.png" alt="Sahm Logo" />
         <h1>Hello, @Model.Name</h1>
+        <input type="hidden" id="userId" name="UserId" value="@Model.UserId" />
     </div>
     <div class="actions">
         <div class="action" onclick="showDiv('payDiv')">
@@ -39,18 +40,16 @@
     <div id="payDiv" class="content-div">
         <h2>Make a Payment</h2>
 
-            <input type="hidden" name="UserId" value="@Model.UserId" />
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="Amount" placeholder="Enter amount" required />
-            <br><br>
-            <button type="submit" onclick="MakePayment()">Confirm Payment</button>
-        
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="Amount" placeholder="Enter amount" required />
+        <br><br>
+        <button type="submit" onclick="MakePayment()">Confirm Payment</button>
+
     </div>
 
     <div id="requestCarDiv" class="content-div">
         <h2>Request a Car</h2>
-            <input type="hidden" name="UserId" value="@Model.UserId" />
-            <button type="submit" onclick="RequestCar()">Request Car</button>
+        <button type="submit" onclick="RequestCar()">Request Car</button>
     </div>
 
     <div id="evaluationDiv" class="content-div">
@@ -61,97 +60,16 @@
             <span class="emoji" data-value="sad" onclick="selectEmoji(this)">&#128577;</span>
         </div>
 
-            <input type="hidden" name="UserId" value="@Model.UserId" />
-            <input type="hidden" id="SelectedEmoji" name="Emoji" />
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="Comment" placeholder="Enter your comment" rows="3" required></textarea>
-            <br><br>
-            <button type="submit" onclick="Evaluate()" >Submit Evaluation</button>
-        
+        <input type="hidden" id="SelectedEmoji" name="Emoji" />
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="Comment" placeholder="Enter your comment" rows="3" required></textarea>
+        <br><br>
+        <button type="submit" onclick="Evaluate()">Submit Evaluation</button>
+
     </div>
 </div>
 
 <script>
-    function showDiv(divId) {
-        document.getElementById('payDiv').style.display = 'none';
-        document.getElementById('requestCarDiv').style.display = 'none';
-        document.getElementById('evaluationDiv').style.display = 'none';
-        document.getElementById(divId).style.display = 'block';
-    }
-
-    function selectEmoji(element) {
-        document.querySelectorAll('.emoji').forEach(emoji => {
-            emoji.classList.remove('selected');
-        });
-        element.classList.add('selected');
-        document.getElementById('SelectedEmoji').value = element.getAttribute('data-value');
-    }
-
-    function MakePayment() {
-        var userData = {
-            userId : @Model.UserId,
-            amount: $('#amount').val()
-        }
-        $.ajax({
-            type: 'post',
-            url: '/Home/MakePayment',
-            data: userData,
-            success: function () {
-                Swal.fire({
-                    title: "Good job!",
-                    text: "payment successfully completed",
-                    icon: "success"
-                });
-            },
-            error: function () {
-                console.log("There is an Error ")
-            }
-        })
-    }
-
-    function RequestCar() {
-        var userData = {
-            userId : @Model.UserId,
-        }
-        $.ajax({
-            type: 'post',
-            url: '/Home/RequestCar',
-            data: userData,
-            success: function () {
-                Swal.fire({
-                    title: "Good job!",
-                    text: "Car Requested!",
-                    icon: "success"
-                });
-            },
-            error: function () {
-                console.log("There is an Error ")
-            }
-        })
-    }
-
-
-    function Evaluate() {
-        var userData = {
-            userId: @Model.UserId,
-            comment: $('#comment').val(),
-            Emoji: $('#SelectedEmoji').val(),
-        }
-        $.ajax({
-            type: 'post',
-            url: '/Home/Evaluate',
-            data: userData,
-            success: function () {
-                Swal.fire({
-                    title: "Good job!",
-                    text: "successfully completed",
-                    icon: "success"
-                });
-            },
-            error: function () {
-                console.log("There is an Error ")
-            }
-        })
-    }
 
 </script>
+<script src="~/assets/js/user_service.js"></script>
