@@ -108,13 +108,18 @@ namespace Sahm.Controllers
         [HttpGet]
         public ActionResult GetUser(int userId)
         {
+            db.Configuration.ProxyCreationEnabled = false;
+
             var user = db.Users.Find(userId);
             if (user == null)
             {
                 return Json(new { success = false, message = "User not found." }, JsonRequestBehavior.AllowGet);
             }
+
             return Json(user, JsonRequestBehavior.AllowGet);
         }
+
+
 
         [HttpPost]
         public ActionResult EditUser(int userId, string name)

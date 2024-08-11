@@ -1,6 +1,6 @@
 ﻿.container {
-    max-width: 500px;
-    margin: 0 auto;
+    width: 60%;
+    margin: 20px auto; 
     text-align: center;
     padding: 20px;
 }
@@ -11,7 +11,7 @@
 }
 
     .header img {
-        max-width: 250px;
+        max-width: 100%; 
         height: auto;
     }
 
@@ -81,13 +81,6 @@
         transition: transform 0.2s, filter 0.2s;
     }
 
-
-        .emoji-selection span:hover,
-        .emoji-selection span.selected {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 20px yellow);
-        }
-
         .emoji-selection span:hover,
         .emoji-selection span.selected {
             transform: scale(1.2);
@@ -123,3 +116,42 @@ button {
     button:hover {
         background-color: #0056a3;
     }
+
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 80%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+    }
+
+    .actions .action {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .emoji-selection .emoji {
+        font-size: 1.5rem;
+        margin: 0 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        max-width: 100%; /* Full width on small devices */
+    }
+
+    .actions .action {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .emoji-selection .emoji {
+        font-size: 1.2rem;
+        margin: 0 3px;
+    }
+}
